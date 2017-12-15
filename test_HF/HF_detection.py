@@ -14,6 +14,7 @@ for i in range(1,201):
     image=cv2.imread(img_path+img[i]+'.jpg',0)
     vect_img.append(image)
 
+vect_img[1]
 
 #cv2.imshow('image',vect_img[1])
 #cv2.waitKey(0)
