@@ -15,8 +15,184 @@ for i in range(1,201):
     vect_img.append(image)
 
 
-cv2.imshow('image',vect_img[1])
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+#cv2.imshow('image',vect_img[1])
+#cv2.waitKey(0)
+#cv2.destroyAllWindows()
 
 print(vect_img)
+
+Label=[]  #1 homme 0 femme
+
+for i in range(1,20):
+    Label.append(1)
+
+for i in range(1,4):
+    Label.append(0)
+
+for i in range(1,4):
+    Label.append(1)
+
+for i in range(1,2):
+    Label.append(0)
+
+for i in range(1,10):
+    Label.append(1)
+
+for i in range(1,2):
+    Label.append(0)
+
+for i in range(1,6):
+    Label.append(1)
+    
+for i in range(1,4):
+    Label.append(0)
+
+for i in range(1,2):
+    Label.append(1)
+
+for i in range(1,4):
+    Label.append(0)
+
+for i in range(1,14):
+    Label.append(1)
+
+
+for i in range(1,2):
+    Label.append(0)
+
+for i in range(1,2):
+    Label.append(1)
+
+for i in range(1,2):
+    Label.append(0)
+
+for i in range(1,6):
+    Label.append(1)
+
+for i in range(1,2):
+    Label.append(0)
+
+for i in range(1,14):
+    Label.append(1)
+
+for i in range(1,2):
+    Label.append(0)
+
+
+for i in range(1,12):
+    Label.append(1)
+
+for i in range(1,2):
+    Label.append(0)
+
+for i in range(1,2):
+    Label.append(0)
+
+for i in range(1,16):
+    Label.append(1)
+
+for i in range(1,2):
+    Label.append(0)
+
+for i in range(1,4):
+    Label.append(1)
+
+for i in range(1,2):
+    Label.append(0)
+
+for i in range(1,4):
+    Label.append(1)
+
+
+for i in range(1,4):
+    Label.append(0)
+
+for i in range(1,8):
+    Label.append(1)
+
+for i in range(1,8):
+    Label.append(0)
+
+for i in range(1,6):
+    Label.append(1)
+    
+for i in range(1,2):
+    Label.append(0)
+
+for i in range(1,8):
+    Label.append(1)
+
+for i in range(1,22): #image106b
+    Label.append(0)
+
+for i in range(1,20):
+    Label.append(1)
+
+for i in range(1,2):
+    Label.append(0)
+
+for i in range(1,2):
+    Label.append(1)
+
+for i in range(1,2):
+    Label.append(0)
+
+for i in range(1,2):
+    Label.append(1)
+    
+for i in range(1,52): #jusqu'à l'image 146b
+    Label.append(1)
+
+for i in range(1,4):
+    Label.append(1)
+
+for i in range(1,6):
+    Label.append(0)
+
+for i in range(1,6):
+    Label.append(1)
+
+for i in range(1,20):
+    Label.append(0)
+
+for i in range(1,2):
+    Label.append(1)
+
+for i in range(1,10):
+    Label.append(0)
+
+for i in range(1,2):
+    Label.append(1)
+
+for i in range(1,20):
+    Label.append(0)
+
+for i in range(1,2):
+    Label.append(1)
+
+for i in range(1,4):
+    Label.append(0)
+
+for i in range(1,8):
+    Label.append(1)
+
+for i in range(1,2):
+    Label.append(0)
+
+for i in range(1,10):
+    Label.append(1)
+
+for i in range(1,28): #ET C'EEEEEEEEEEST TERMINEEEEEEEEEEEEEEEE
+    Label.append(0)
+
+print()
+
+
+fichier = open("Label.txt", "w")
+for item in Label:
+    fichier.write(str(item))
+    fichier.write("\n")
+fichier.close()
+
+
+
