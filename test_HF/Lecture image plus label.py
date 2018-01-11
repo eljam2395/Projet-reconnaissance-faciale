@@ -1,5 +1,14 @@
-import numpy as np
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+import argparse
+import sys
+
 import cv2
+
+import tensorflow as tf
+import numpy as np
 
 img=[]
 vect_img=[]
@@ -10,24 +19,26 @@ for i in range(1,201):
 img_path='frontalimages_manuallyaligned_part1/'
 #print(img_path+img[2]+'.jpg')
 
-print(np.shape(img))
 
 for i in range(0,400):
     image=cv2.imread(img_path+img[i]+'.jpg',0)
     vect_img.append(image)
 
+Label=[]
+
 fichier = open("Label.txt", "r")
-Label=fichier.read()
+
+while 1:
+    txt = fichier.readline()
+    if txt =='':
+        break
+    else:
+        Label.append(txt[0])
 #print(Label)
 fichier.close()
 
-print(vect_img[199])
-print('lol')
-print(np.vstack(vect_img[0]))
-
+print(np.shape(Label))
 print(np.shape(vect_img))
-
-
-cv2.imshow('image',vect_img[399])
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+#cv2.imshow('image',vect_img[399])
+#cv2.waitKey(0)
+#cv2.destroyAllWindows()
