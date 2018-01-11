@@ -20,7 +20,7 @@ vect_img[1]
 #cv2.waitKey(0)
 #cv2.destroyAllWindows()
 
-print(vect_img)
+#print(vect_img)
 
 Label=[]  #1 homme 0 femme
 
@@ -170,7 +170,6 @@ for i in range(1,20):
 
 for i in range(1,2):
     Label.append(1)
-
 for i in range(1,4):
     Label.append(0)
 
@@ -183,10 +182,12 @@ for i in range(1,2):
 for i in range(1,10):
     Label.append(1)
 
+i=0
 for i in range(1,28): #ET C'EEEEEEEEEEST TERMINEEEEEEEEEEEEEEEE
     Label.append(0)
+    i=i+1
 
-print()
+print(np.shape(Label))
 
 
 fichier = open("Label.txt", "w")
