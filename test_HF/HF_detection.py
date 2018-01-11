@@ -7,7 +7,7 @@ for i in range(1,201):
     for lettre in ['a','b']:
         img.append(str(i)+lettre)
         
-img_path='F:/Documents/Iris 3A/Projet 3A/Git/Projet-reconnaissance-faciale/test_HF/frontalimages_manuallyaligned_part1/'
+img_path='frontalimages_manuallyaligned_part1/'
 print(img_path+img[2]+'.jpg')
 
 for i in range(1,201):
