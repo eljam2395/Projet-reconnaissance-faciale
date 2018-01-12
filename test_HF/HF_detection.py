@@ -20,7 +20,7 @@ vect_img[1]
 #cv2.waitKey(0)
 #cv2.destroyAllWindows()
 
-print(vect_img)
+#print(vect_img)
 
 Label=[]  #1 homme 0 femme
 
@@ -193,6 +193,7 @@ for i in range(1,11): #388
 
 for i in range(1,13): #400
     Label.append(0)
+    i=i+1
 
 print(np.shape(Label))
 
