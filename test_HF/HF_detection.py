@@ -8,7 +8,7 @@ for i in range(1,201):
         img.append(str(i)+lettre)
         
 img_path='frontalimages_manuallyaligned_part1/'
-print(img_path+img[2]+'.jpg')
+#print(img_path+img[2]+'.jpg')
 
 for i in range(1,201):
     image=cv2.imread(img_path+img[i]+'.jpg',0)
@@ -24,169 +24,177 @@ print(vect_img)
 
 Label=[]  #1 homme 0 femme
 
-for i in range(1,20):
+for i in range(1,21): #20
     Label.append(1)
 
-for i in range(1,4):
+for i in range(1,5): #24
     Label.append(0)
 
-for i in range(1,4):
+for i in range(1,5): #28
     Label.append(1)
 
-for i in range(1,2):
+for i in range(1,3): #30
     Label.append(0)
 
-for i in range(1,10):
+for i in range(1,11): #40
     Label.append(1)
 
-for i in range(1,2):
+for i in range(1,3): #42
     Label.append(0)
 
-for i in range(1,6):
+for i in range(1,7): #48
     Label.append(1)
     
-for i in range(1,4):
+for i in range(1,5): #52
     Label.append(0)
 
-for i in range(1,2):
+for i in range(1,3): #54
     Label.append(1)
 
-for i in range(1,4):
+for i in range(1,5): #58
     Label.append(0)
 
-for i in range(1,14):
-    Label.append(1)
-
-
-for i in range(1,2):
-    Label.append(0)
-
-for i in range(1,2):
-    Label.append(1)
-
-for i in range(1,2):
-    Label.append(0)
-
-for i in range(1,6):
-    Label.append(1)
-
-for i in range(1,2):
-    Label.append(0)
-
-for i in range(1,14):
-    Label.append(1)
-
-for i in range(1,2):
-    Label.append(0)
-
-
-for i in range(1,12):
-    Label.append(1)
-
-for i in range(1,2):
-    Label.append(0)
-
-for i in range(1,2):
-    Label.append(0)
-
-for i in range(1,16):
-    Label.append(1)
-
-for i in range(1,2):
-    Label.append(0)
-
-for i in range(1,4):
-    Label.append(1)
-
-for i in range(1,2):
-    Label.append(0)
-
-for i in range(1,4):
+for i in range(1,15): #72
     Label.append(1)
 
 
-for i in range(1,4):
+for i in range(1,3): #74
     Label.append(0)
 
-for i in range(1,8):
+for i in range(1,3): #76
     Label.append(1)
 
-for i in range(1,8):
+for i in range(1,3): #78
     Label.append(0)
 
-for i in range(1,6):
+for i in range(1,7): #84
+    Label.append(1)
+
+for i in range(1,3): #86
+    Label.append(0)
+
+for i in range(1,15): #100
+    Label.append(1)
+
+for i in range(1,3): #102
+    Label.append(0)
+
+
+for i in range(1,13): #114
+    Label.append(1)
+
+for i in range(1,3): #116
+    Label.append(0)
+
+for i in range(1,3): #118
     Label.append(1)
     
-for i in range(1,2):
+for i in range(1,3): #120 
     Label.append(0)
 
-for i in range(1,8):
+for i in range(1,17): #136
     Label.append(1)
 
-for i in range(1,22): #image106b
+for i in range(1,3): #138
     Label.append(0)
 
-for i in range(1,20):
+for i in range(1,5): #142
     Label.append(1)
 
-for i in range(1,2):
+for i in range(1,3): #144
     Label.append(0)
 
-for i in range(1,2):
+for i in range(1,5):#148
     Label.append(1)
 
-for i in range(1,2):
+for i in range(1,3): #150
     Label.append(0)
 
-for i in range(1,2):
+for i in range(1,5): #154
+    Label.append(1)
+
+for i in range(1,5): #158
+    Label.append(0)
+
+for i in range(1,9): #166
     Label.append(1)
     
-for i in range(1,52): #jusqu'à l'image 146b
-    Label.append(1)
-
-for i in range(1,4):
-    Label.append(1)
-
-for i in range(1,6):
+for i in range(1,9): #174
     Label.append(0)
 
-for i in range(1,6):
+for i in range(1,7): #180
     Label.append(1)
 
-for i in range(1,20):
+for i in range(1,3): #182
     Label.append(0)
 
-for i in range(1,2):
+for i in range(1,9): #190
     Label.append(1)
 
-for i in range(1,10):
+for i in range(1,23): #212
     Label.append(0)
 
-for i in range(1,2):
+for i in range(1,21): #232
     Label.append(1)
 
-for i in range(1,20):
+for i in range(1,3): #234
     Label.append(0)
 
-for i in range(1,2):
+for i in range(1,3): #236
     Label.append(1)
 
-for i in range(1,4):
+for i in range(1,3): #238
     Label.append(0)
-
-for i in range(1,8):
+    
+for i in range(1,3): #240
     Label.append(1)
 
-for i in range(1,2):
+for i in range(1,53): #292
     Label.append(0)
 
-for i in range(1,10):
+for i in range(1,5): #296
     Label.append(1)
 
-for i in range(1,28): #ET C'EEEEEEEEEEST TERMINEEEEEEEEEEEEEEEE
+for i in range(1,7): #302
     Label.append(0)
 
-print()
+for i in range(1,7): #308
+    Label.append(1)
+
+for i in range(1,21): #328
+    Label.append(0)
+
+for i in range(1,3): #330
+    Label.append(1)
+
+for i in range(1,11): #340
+    Label.append(0)
+
+for i in range(1,3): #342
+    Label.append(1)
+
+for i in range(1,21): #362
+    Label.append(0)
+
+for i in range(1,3): #364
+    Label.append(1)
+
+for i in range(1,5): #368
+    Label.append(0)
+
+for i in range(1,9): #376
+    Label.append(1)
+
+for i in range(1,3): #378
+    Label.append(0)
+
+for i in range(1,11): #388
+    Label.append(1)
+
+for i in range(1,13): #400
+    Label.append(0)
+
+print(np.shape(Label))
 
 
 fichier = open("Label.txt", "w")
