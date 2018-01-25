@@ -199,6 +199,7 @@ for i in range(1,13): #400
 
 print(np.shape(Label))
 
+np.save('Label_test',Label)
 
 fichier = open("vectLabel.txt", "w")
 for item in Label:
