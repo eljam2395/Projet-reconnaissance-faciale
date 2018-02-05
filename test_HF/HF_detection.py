@@ -197,6 +197,7 @@ for i in range(1,13): #400
 
 print(np.shape(Label))
 
+np.save('Label',Label)
 
 fichier = open("Label.txt", "w")
 for item in Label:

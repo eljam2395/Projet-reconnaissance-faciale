@@ -52,11 +52,11 @@ x = tf.placeholder(tf.float32, [None, 260*360])
 W = tf.Variable(tf.zeros([260*360, 2]))
 b = tf.Variable(tf.zeros([2]))
 
-#y = tf.nn.softmax(tf.matmul(x, W) + b)
+y = tf.nn.softmax(tf.matmul(x, W) + b)
 
 y_ = tf.placeholder(tf.float32, [None,2])
 
-#cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))
+cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))
 
 #loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(tf.matmul(x, W) + b,
 #  labels_placeholder))
