@@ -9,6 +9,7 @@ import cv2
 
 import tensorflow as tf
 import numpy as np
+import time
 
 img=[]
 tab_img=[]
@@ -24,18 +25,9 @@ for i in range(0,400):
     image=cv2.imread(img_path+img[i]+'.jpg',0)
     tab_img.append(image)
 
-Label=[]
+#Label=[]
 
-fichier = open("Label.txt", "r")
-
-while 1:
-    txt = fichier.readline()
-    if txt =='':
-        break
-    else:
-        Label.append(txt[0])
-        
-fichier.close()
+Label=np.load('Label_test.npy');
 
 print(np.shape(Label))
 print(np.shape(tab_img))
@@ -51,6 +43,9 @@ print(np.shape(vect_img[1]))
 #cv2.waitKey(0)
 #cv2.destroyAllWindows()
 
+tict = time.time()
+
+
 
 x = tf.placeholder(tf.float32, [None, 260*360])
 
@@ -59,23 +54,31 @@ b = tf.Variable(tf.zeros([2]))
 
 y = tf.nn.softmax(tf.matmul(x, W) + b)
 
-y_ = tf.placeholder(tf.float32, [None, ])
+y_ = tf.placeholder(tf.float32, [None,2])
 
 cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))
+
+#loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(tf.matmul(x, W) + b,
+#  labels_placeholder))
 
 train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
 
 sess = tf.InteractiveSession()
 
+
 tf.global_variables_initializer().run()
 
-for _ in range(1000):
-  sess.run(train_step, feed_dict={x: vect_img[1:300], y_: Label[1:300]})
+with tf.device('/gpu:1'):
+    for _ in range(1000):
+      sess.run(train_step, feed_dict={x: vect_img[1:200], y_: Label[1:200]})
 
 correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))
 
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
-print(sess.run(accuracy, feed_dict={x: vect_img[301:399], y_: Label[301:399]}))
+elapsed = time.time() - tict
+print(elapsed)
+print('\n')
+print(sess.run(accuracy, feed_dict={x: vect_img[201:399], y_: Label[201:399]}))
 
 
