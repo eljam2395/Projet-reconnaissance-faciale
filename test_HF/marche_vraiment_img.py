@@ -87,7 +87,8 @@ def neural_network_model(data):
     l2 = tf.nn.relu(l2) 
 
     l3 = tf.add(tf.matmul(l2, hidden_l3['weights']), hidden_l3['biases']) 
-    l3 = tf.nn.relu(l3) 
+    l3 = tf.nn.relu(l3)
+
 
     output = tf.add(tf.matmul(l3, output_l['weights']), output_l['biases']) 
     return output 
@@ -101,32 +102,36 @@ def train_neural_network(x):
     optimizer = tf.train.AdamOptimizer().minimize(cost)
     epochs_no = 10
     
-    with tf.Session() as sess: 
+    with tf.Session() as sess:
+        writer = tf.summary.FileWriter("output", sess.graph)
         sess.run(tf.global_variables_initializer()) # v1.0 changes 
-
+        
         # training 
-        for epoch in range(epochs_no): 
-            epoch_loss = 0 
-            for p in range(8): 
-                epoch_x=epoch_img[:,:,p]
-                epoch_y=epoch_label[:,:,p]
-                _, c = sess.run([optimizer, cost], feed_dict = {x: epoch_x, y: epoch_y}) # code that optimizes the weights & biases 
-                epoch_loss += c
-                #_, c = sess.run([optimizer, cost], feed_dict = {x: vect_img, y: Label}) # code that optimizes the weights & biases 
-
+        for epoch in range(7):
+            epoch_x=epoch_img[:,:,epoch]
+            epoch_y=epoch_label[:,:,epoch]
+            _, c = sess.run([optimizer, cost], feed_dict = {x: epoch_x, y: epoch_y}) # code that optimizes the weights & biases 
+            epoch_loss = c
+            #_, c = sess.run([optimizer, cost], feed_dict = {x: vect_img, y: Label}) # code that optimizes the weights & biases 
             print('Epoch', epoch, 'completed out of', epochs_no, 'loss:', epoch_loss) 
         # testing 
         correct = tf.equal(tf.argmax(prediction, 1), tf.argmax(y, 1))
-        print('valeur',tf.argmax(prediction, 1).eval({x:vect_img , y: Label}))
-        print('estim',tf.argmax(y, 1).eval({x:vect_img , y: Label}))
+        print('valeur',tf.argmax(prediction, 1).eval({x:epoch_img[:,:,7] , y: epoch_label[:,:,7]}))
+        print('estim',tf.argmax(y, 1).eval({x:epoch_img[:,:,7] , y: epoch_label[:,:,7]}))
         accuracy = tf.reduce_mean(tf.cast(correct, 'float')) 
-        print('Accuracy:', accuracy.eval({x:vect_img , y: Label}))
-      
+        print('Accuracy:', accuracy.eval({x:epoch_img[:,:,7] , y: epoch_label[:,:,7]}))
+        return(accuracy.eval({x:epoch_img[:,:,7] , y: epoch_label[:,:,7]}))
+        writer.close()
 
+ACC=np.zeros(5)
+for i in range(5):
+    ACC[i]=train_neural_network(x)
+    print('iteration : ',i)
 
-train_neural_network(x)
+for i in range(5):
+    print(ACC[i])
 
-
+print('accuracy = ',np.mean(ACC))
 
 
 
