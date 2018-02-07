@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 
+
 img=[]
 vect_img=[]
 for i in range(1,201):
@@ -198,7 +199,9 @@ for i in range(1,13): #400
     i=i+1
 
 print(np.shape(Label))
+print(type(Label[0]))
 
+np.save('label_test', Label)
 
 fichier = open("vectLabel.txt", "w")
 for item in Label:
