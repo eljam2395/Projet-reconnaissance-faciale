@@ -27,33 +27,41 @@ for i in range(0,400):
 
 vect_img=np.reshape(tab_img,[400,360*260])
 
+fold=10
 
-fold=5
-
-epoch_img=np.ones((80,93600,fold),float)
+epoch_img=np.ones((40,93600,fold),float)
 print(np.shape(epoch_img))
 
 
-epoch_img[:,:,0]=(vect_img[0:80,:])
-epoch_img[:,:,1]=(vect_img[80:160,:])
-epoch_img[:,:,2]=(vect_img[160:240:])
-epoch_img[:,:,3]=(vect_img[240:320,:])
-epoch_img[:,:,4]=(vect_img[320:400,:])
+epoch_img[:,:,0]=(vect_img[0:40,:])
+epoch_img[:,:,1]=(vect_img[40:80,:])
+epoch_img[:,:,2]=(vect_img[80:120,:])
+epoch_img[:,:,3]=(vect_img[120:160:])
+epoch_img[:,:,4]=(vect_img[160:200,:])
+epoch_img[:,:,5]=(vect_img[200:240,:])
+epoch_img[:,:,6]=(vect_img[240:280,:])
+epoch_img[:,:,7]=(vect_img[280:320,:])
+epoch_img[:,:,8]=(vect_img[320:360,:])
+epoch_img[:,:,9]=(vect_img[360:400,:])
+
 
 Label=np.load('Label_test.npy');
 
 
-epoch_label=np.ones((80,2,fold),float)
+epoch_label=np.ones((40,2,fold),float)
 print(np.shape(epoch_label))
 
 
-epoch_label[:,:,0]=(Label[0:80,:])
-epoch_label[:,:,1]=(Label[80:160,:])
-epoch_label[:,:,2]=(Label[160:240:])
-epoch_label[:,:,3]=(Label[240:320,:])
-epoch_label[:,:,4]=(Label[320:400,:])
-
-
+epoch_label[:,:,0]=(Label[0:40,:])
+epoch_label[:,:,1]=(Label[40:80,:])
+epoch_label[:,:,2]=(Label[80:120,:])
+epoch_label[:,:,3]=(Label[120:160:])
+epoch_label[:,:,4]=(Label[160:200,:])
+epoch_label[:,:,5]=(Label[200:240,:])
+epoch_label[:,:,6]=(Label[240:280,:])
+epoch_label[:,:,7]=(Label[280:320,:])
+epoch_label[:,:,8]=(Label[320:360,:])
+epoch_label[:,:,9]=(Label[360:400,:])
 print(np.shape(Label))
 print(np.shape(tab_img))
 #print(np.shape(tab_img[1][:]))
@@ -80,7 +88,6 @@ def neural_network_model(data):
 
     l1 = tf.add(tf.matmul(data, hidden_l1['weights']), hidden_l1['biases']) 
     l1 = tf.nn.relu(l1)
-
     
     l2 = tf.add(tf.matmul(l1, hidden_l2['weights']), hidden_l2['biases']) 
     l2 = tf.nn.relu(l2) 

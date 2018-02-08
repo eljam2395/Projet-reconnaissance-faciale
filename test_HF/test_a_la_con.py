@@ -21,3 +21,6 @@ print(array)
 print('lol')
 for epoch in array:
     print(array[int(epoch)])
+
+for i in range(4):
+    print(i)
