@@ -11,7 +11,7 @@ import tensorflow as tf
 import numpy as np
 import time
 
-
+"""
 img=[]
 tab_img=[]
 for i in range(1,201):
@@ -72,7 +72,7 @@ batch_size = 50
 # input feature size = 360*260 pixels = 93600 
 x = tf.placeholder('float', [None, 93600]) 
 y = tf.placeholder('float') 
-
+"""
 def neural_network_model(data): 
     # input_data * weights + biases 
     hidden_l1 = {'weights': tf.Variable(tf.random_normal([93600, n_nodes_hl1])), 'biases': tf.Variable(tf.random_normal([n_nodes_hl1]))} 
