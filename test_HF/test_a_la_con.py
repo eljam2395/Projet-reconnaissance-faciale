@@ -1,4 +1,5 @@
 import tensorflow as tf
+import numpy as np
 
 a = tf.add(1, 2,)
 b = tf.multiply(a, 3)
@@ -8,8 +9,15 @@ e = tf.multiply(4, 5,)
 f = tf.div(c, 6,)
 g = tf.add(b, d)
 h = tf.multiply(g, f)
-
+'''
 with tf.Session() as sess:
 	writer = tf.summary.FileWriter("output", sess.graph)
-	print(sess.run(h))
+	#print(sess.run(h))
 	writer.close()
+	'''
+array=np.linspace(0,7,8)
+
+print(array)
+print('lol')
+for epoch in array:
+    print(array[int(epoch)])

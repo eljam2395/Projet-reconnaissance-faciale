@@ -27,34 +27,29 @@ for i in range(0,400):
 
 vect_img=np.reshape(tab_img,[400,360*260])
 
-epoch_img=np.ones((50,93600,8),float)
+epoch_img=np.ones((80,93600,8),float)
 print(np.shape(epoch_img))
 
-epoch_img[:,:,0]=(vect_img[0:50,:])
-epoch_img[:,:,1]=(vect_img[50:100,:])
-epoch_img[:,:,2]=(vect_img[100:150,:])
-epoch_img[:,:,3]=(vect_img[150:200,:])
-epoch_img[:,:,4]=(vect_img[200:250,:])
-epoch_img[:,:,5]=(vect_img[250:300,:])
-epoch_img[:,:,6]=(vect_img[300:350,:])
-epoch_img[:,:,7]=(vect_img[350:400,:])
+
+epoch_img[:,:,0]=(vect_img[0:80,:])
+epoch_img[:,:,1]=(vect_img[80:160,:])
+epoch_img[:,:,2]=(vect_img[160:240:])
+epoch_img[:,:,3]=(vect_img[240:320,:])
+epoch_img[:,:,4]=(vect_img[320:400,:])
 
 Label=np.load('Label_test.npy');
 
 
-epoch_label=np.ones((50,2,8),float)
+epoch_label=np.ones((80,2,8),float)
 print(np.shape(epoch_label))
 
 
+epoch_label[:,:,0]=(Label[0:80,:])
+epoch_label[:,:,1]=(Label[80:160,:])
+epoch_label[:,:,2]=(Label[160:240:])
+epoch_label[:,:,3]=(Label[240:320,:])
+epoch_label[:,:,4]=(Label[320:400,:])
 
-epoch_label[:,:,0]=(Label[0:50,:])
-epoch_label[:,:,1]=(Label[50:100,:])
-epoch_label[:,:,2]=(Label[100:150,:])
-epoch_label[:,:,3]=(Label[150:200,:])
-epoch_label[:,:,4]=(Label[200:250,:])
-epoch_label[:,:,5]=(Label[250:300,:])
-epoch_label[:,:,6]=(Label[300:350,:])
-epoch_label[:,:,7]=(Label[350:400,:])
 
 print(np.shape(Label))
 print(np.shape(tab_img))
@@ -103,26 +98,34 @@ def train_neural_network(x):
     epochs_no = 10
     
     with tf.Session() as sess:
-        writer = tf.summary.FileWriter("output", sess.graph)
-        sess.run(tf.global_variables_initializer()) # v1.0 changes 
-        
-        # training 
-        for epoch in range(7):
-            epoch_x=epoch_img[:,:,epoch]
-            epoch_y=epoch_label[:,:,epoch]
-            _, c = sess.run([optimizer, cost], feed_dict = {x: epoch_x, y: epoch_y}) # code that optimizes the weights & biases 
-            epoch_loss = c
-            #_, c = sess.run([optimizer, cost], feed_dict = {x: vect_img, y: Label}) # code that optimizes the weights & biases 
-            print('Epoch', epoch, 'completed out of', epochs_no, 'loss:', epoch_loss) 
-        # testing 
-        correct = tf.equal(tf.argmax(prediction, 1), tf.argmax(y, 1))
-        print('valeur',tf.argmax(prediction, 1).eval({x:epoch_img[:,:,7] , y: epoch_label[:,:,7]}))
-        print('estim',tf.argmax(y, 1).eval({x:epoch_img[:,:,7] , y: epoch_label[:,:,7]}))
-        accuracy = tf.reduce_mean(tf.cast(correct, 'float')) 
-        print('Accuracy:', accuracy.eval({x:epoch_img[:,:,7] , y: epoch_label[:,:,7]}))
-        return(accuracy.eval({x:epoch_img[:,:,7] , y: epoch_label[:,:,7]}))
-        writer.close()
+        #writer = tf.summary.FileWriter("output", sess.graph)
+        ACC=np.zeros(4)
+        sess.run(tf.global_variables_initializer()) # v1.0 changes
+        for cross_val in range(4): 
+            # training
+            print('iter : ',cross_val)
+            array=np.linspace(0,7,8)
+            np.delete(array,cross_val)
+            for epoch in array:
+                epoch=int(epoch)
+                epoch_x=epoch_img[:,:,epoch]
+                epoch_y=epoch_label[:,:,epoch]
+                _, c = sess.run([optimizer, cost], feed_dict = {x: epoch_x, y: epoch_y}) # code that optimizes the weights & biases 
+                epoch_loss = c
+                #_, c = sess.run([optimizer, cost], feed_dict = {x: vect_img, y: Label}) # code that optimizes the weights & biases 
+                print('Epoch', epoch, 'completed out of', epochs_no, 'loss:', epoch_loss) 
+            # testing 7
+            correct = tf.equal(tf.argmax(prediction, 1), tf.argmax(y, 1))
+            print('valeur',tf.argmax(prediction, 1).eval({x:epoch_img[:,:,cross_val] , y: epoch_label[:,:,cross_val]}))
+            print('estim',tf.argmax(y, 1).eval({x:epoch_img[:,:,cross_val] , y: epoch_label[:,:,cross_val]}))
+            accuracy = tf.reduce_mean(tf.cast(correct, 'float'))
+            ACC[cross_val]=accuracy.eval({x:epoch_img[:,:,cross_val] , y: epoch_label[:,:,cross_val]})
+            print('Accuracy:',ACC[cross_val])
+    return(ACC)
+            #writer.close()
 
+
+'''
 ACC=np.zeros(5)
 for i in range(5):
     ACC[i]=train_neural_network(x)
@@ -132,9 +135,10 @@ for i in range(5):
     print(ACC[i])
 
 print('accuracy = ',np.mean(ACC))
+'''
 
-
-
+ACC=train_neural_network(x)
+print(np.mean(ACC))
 
 
 
