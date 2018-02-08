@@ -11,21 +11,8 @@ import tensorflow as tf
 import numpy as np
 import time
 
-img=[]
-tab_img=[]
-for i in range(1,201):
-    for lettre in ['a','b']:
-        img.append(str(i)+lettre)
-        
-img_path='frontalimages_manuallyaligned_part1/'
-#print(img_path+img[2]+'.jpg')
 
-
-for i in range(0,400):
-    image=cv2.imread(img_path+img[i]+'.jpg',0)
-    tab_img.append(image)
-
-vect_img=np.reshape(tab_img,[400,360*260])
+vect_img=np.load('Img_flatten.npy');
 
 fold=10
 
@@ -63,7 +50,7 @@ epoch_label[:,:,7]=(Label[280:320,:])
 epoch_label[:,:,8]=(Label[320:360,:])
 epoch_label[:,:,9]=(Label[360:400,:])
 print(np.shape(Label))
-print(np.shape(tab_img))
+print(np.shape(vect_img))
 #print(np.shape(tab_img[1][:]))
 
 
@@ -153,7 +140,7 @@ print('accuracy = ',np.mean(ACC))
 '''
 
 ACC=train_neural_network(x)
-print(" Mean accuracy : "np.mean(ACC))
+print(" Mean accuracy : ",np.mean(ACC))
 
 
 
