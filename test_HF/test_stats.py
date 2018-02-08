@@ -70,8 +70,16 @@ batch_size = 50
 
 # input feature size = 360*260 pixels = 93600 
 x = tf.placeholder('float', [None, 93600]) 
-y = tf.placeholder('float') 
+y = tf.placeholder('float')
 
-exec(open("classifHF.py").read())
+nb_fail = np.zeros(400)
+ind_fail = exec(open("classifHF.py").read())
+print(ind_fail)
+
+for i in ind_fail:
+    nb_fail[i]+=1
+print(nb_fail)
+
+
 
 

@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import argparse
 import sys
+import matplotlib.pyplot as plt
 
 import cv2
 
@@ -11,7 +12,7 @@ import tensorflow as tf
 import numpy as np
 import time
 
-"""
+
 img=[]
 tab_img=[]
 for i in range(1,201):
@@ -72,7 +73,7 @@ batch_size = 50
 # input feature size = 360*260 pixels = 93600 
 x = tf.placeholder('float', [None, 93600]) 
 y = tf.placeholder('float') 
-"""
+
 def neural_network_model(data): 
     # input_data * weights + biases 
     hidden_l1 = {'weights': tf.Variable(tf.random_normal([93600, n_nodes_hl1])), 'biases': tf.Variable(tf.random_normal([n_nodes_hl1]))} 
@@ -95,7 +96,6 @@ def neural_network_model(data):
 
 def train_neural_network(x): 
     prediction = neural_network_model(x)
-   
     cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=prediction, labels=y))#a verif # v1.0 changes 
 
     # optimizer value = 0.001, Adam similar to SGD 
@@ -118,22 +118,34 @@ def train_neural_network(x):
         # testing 
         correct = tf.equal(tf.argmax(prediction, 1), tf.argmax(y, 1))
         valeur = tf.argmax(prediction, 1).eval({x:vect_img , y: Label})
-        print('valeur',valeur)
+        #print('valeur',valeur)
         #print('valeur',tf.argmax(prediction, 1).eval({x:vect_img , y: Label}))
         estim = tf.argmax(y, 1).eval({x:vect_img , y: Label});
-        print('estim', estim)
+        #print('estim', estim)
         #print('estim',tf.argmax(y, 1).eval({x:vect_img , y: Label}))
         accuracy = tf.reduce_mean(tf.cast(correct, 'float')) 
-        print('Accuracy:', accuracy.eval({x:vect_img , y: Label}))
+        #print('Accuracy:', accuracy.eval({x:vect_img , y: Label}))
         #print(correct)
-        print('C EST LE TEST DE LA VERITE')
+        #print('C EST LE TEST DE LA VERITE')
         ind_false = np.nonzero((valeur-estim))
-        print(ind_false)
+        """
+        fichier = open("stats.txt", "w")
+        for item in ind_false:
+            fichier.write(str(item))
+            fichier.write("\n")
+        fichier.close()
+        """
+        return(ind_false)
+        
+nb_fail = np.zeros(400)
+for i in range(0,20):
+    ind_fail = train_neural_network(x)
+    for j in ind_fail:
+        nb_fail[j]+=1
 
-
-train_neural_network(x)
-
-
+print(nb_fail)
+plt.hist(nb_fail,bins='auto')
+plt.show()
 
 
 
