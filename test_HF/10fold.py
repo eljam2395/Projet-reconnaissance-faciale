@@ -10,7 +10,11 @@ import cv2
 import tensorflow as tf
 import numpy as np
 import time
+from datetime import datetime
 
+now=datetime.utcnow().strftime("%Y%m%d%H%M%S")
+root_logdir="tf_logs"
+logdir="{}/run-{}/".format(root_logdir,now)
 
 vect_img=np.load('Img_flatten.npy');
 
@@ -91,17 +95,17 @@ def train_neural_network(x):
     prediction = neural_network_model(x)
    
     cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=prediction, labels=y))#a verif # v1.0 changes 
-
+    mse_summary=tf.summary.scalar("mse",cost)
+    summary_writer=tf.summary.FileWriter(logdir,tf.get_default_graph())
     # optimizer value = 0.001, Adam similar to SGD 
     optimizer = tf.train.AdamOptimizer().minimize(cost)
     epochs_no = 10
     
     with tf.Session() as sess:
-        writer = tf.summary.FileWriter("output", sess.graph)
-        summaries = tf.summary.merge_all()
 
         ACC=np.zeros(fold)
         sess.run(tf.global_variables_initializer()) # v1.0 changes
+        step=1
         for cross_val in range(fold): 
             # training
             print('iter : ',cross_val)
@@ -122,7 +126,10 @@ def train_neural_network(x):
             accuracy = tf.reduce_mean(tf.cast(correct, 'float'))
             ACC[cross_val]=accuracy.eval({x:epoch_img[:,:,cross_val] , y: epoch_label[:,:,cross_val]})
             print('Accuracy:',ACC[cross_val])
-        writer.close()
+            summary_writer.add_summary(mse_summary.eval(feed_dict={x:epoch_img[:,:,cross_val],y:epoch_label[:,:,cross_val]}),step)
+            
+            step=step+1
+        summary_writer.close()
     return(ACC)
     
 
