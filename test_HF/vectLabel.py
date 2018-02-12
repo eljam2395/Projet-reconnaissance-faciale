@@ -1,8 +1,9 @@
 import numpy as np
 import cv2
 
+
 img=[]
-vect_img=[]
+tab_img=[]
 for i in range(1,201):
     for lettre in ['a','b']:
         img.append(str(i)+lettre)
@@ -10,11 +11,17 @@ for i in range(1,201):
 img_path='frontalimages_manuallyaligned_part1/'
 #print(img_path+img[2]+'.jpg')
 
-for i in range(1,201):
+for i in range(0,400):
     image=cv2.imread(img_path+img[i]+'.jpg',0)
-    vect_img.append(image)
+    tab_img.append(image)
 
-vect_img[1]
+tab_img[1]
+vect_img=[]
+print(np.shape(tab_img))
+
+vect_img=np.reshape(tab_img,[400,360*260])
+
+np.save('Img_flatten',vect_img)
 
 #cv2.imshow('image',vect_img[1])
 #cv2.waitKey(0)
@@ -198,14 +205,14 @@ for i in range(1,13): #400
     i=i+1
 
 print(np.shape(Label))
+print(type(Label[0]))
 
+<<<<<<< HEAD
+np.save('label_test', Label)
+=======
 np.save('Label_test',Label)
+>>>>>>> Maxime
 
-fichier = open("vectLabel.txt", "w")
-for item in Label:
-    fichier.write(str(item))
-    fichier.write("\n")
-fichier.close()
 
 
 
