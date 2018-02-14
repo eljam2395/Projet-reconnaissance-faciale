@@ -10,7 +10,7 @@ import cv2
 import tensorflow as tf
 import numpy as np
 import time
-
+t = time.time()
 
 vect_img=np.load('Img_flatten_cropped.npy');
 
@@ -53,42 +53,44 @@ n_nodes_hl3 = 500
 
 n_classes = 2 
 
+with tf.device("/cpu:0"):
+    # input feature size = 193*162  
+    x = tf.placeholder('float', [None, nb_pixel]) 
+    y = tf.placeholder('float') 
 
-# input feature size = 193*162  
-x = tf.placeholder('float', [None, nb_pixel]) 
-y = tf.placeholder('float') 
+def neural_network_model(data):
+    with tf.device("/cpu:0"):
+        # input_data * weights + biases 
+        hidden_l1 = {'weights': tf.Variable(tf.random_normal([nb_pixel, n_nodes_hl1])), 'biases': tf.Variable(tf.random_normal([n_nodes_hl1]))} 
+        hidden_l2 = {'weights': tf.Variable(tf.random_normal([n_nodes_hl1, n_nodes_hl2])), 'biases': tf.Variable(tf.random_normal([n_nodes_hl2]))} 
+        hidden_l3 = {'weights': tf.Variable(tf.random_normal([n_nodes_hl2, n_nodes_hl3])), 'biases': tf.Variable(tf.random_normal([n_nodes_hl3]))}
+        
+        output_l = {'weights': tf.Variable(tf.random_normal([n_nodes_hl3, n_classes])), 'biases': tf.Variable(tf.random_normal([n_classes]))} 
 
-def neural_network_model(data): 
-    # input_data * weights + biases 
-    hidden_l1 = {'weights': tf.Variable(tf.random_normal([nb_pixel, n_nodes_hl1])), 'biases': tf.Variable(tf.random_normal([n_nodes_hl1]))} 
-    hidden_l2 = {'weights': tf.Variable(tf.random_normal([n_nodes_hl1, n_nodes_hl2])), 'biases': tf.Variable(tf.random_normal([n_nodes_hl2]))} 
-    hidden_l3 = {'weights': tf.Variable(tf.random_normal([n_nodes_hl2, n_nodes_hl3])), 'biases': tf.Variable(tf.random_normal([n_nodes_hl3]))}
-    
-    output_l = {'weights': tf.Variable(tf.random_normal([n_nodes_hl3, n_classes])), 'biases': tf.Variable(tf.random_normal([n_classes]))} 
+        l1 = tf.add(tf.matmul(data, hidden_l1['weights']), hidden_l1['biases']) 
+        l1 = tf.nn.relu(l1)
 
-    l1 = tf.add(tf.matmul(data, hidden_l1['weights']), hidden_l1['biases']) 
-    l1 = tf.nn.relu(l1)
+        
+        l2 = tf.add(tf.matmul(l1, hidden_l2['weights']), hidden_l2['biases']) 
+        l2 = tf.nn.relu(l2) 
 
-    
-    l2 = tf.add(tf.matmul(l1, hidden_l2['weights']), hidden_l2['biases']) 
-    l2 = tf.nn.relu(l2) 
+        l3 = tf.add(tf.matmul(l2, hidden_l3['weights']), hidden_l3['biases']) 
+        l3 = tf.nn.relu(l3)
 
-    l3 = tf.add(tf.matmul(l2, hidden_l3['weights']), hidden_l3['biases']) 
-    l3 = tf.nn.relu(l3)
-
-    output = tf.add(tf.matmul(l3, output_l['weights']), output_l['biases'])
+        output = tf.add(tf.matmul(l3, output_l['weights']), output_l['biases'])
 
 
     return output 
 
-def train_neural_network(x): 
-    prediction = neural_network_model(x)
-   
-    cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=prediction, labels=y))#a verif # v1.0 changes 
+def train_neural_network(x):
+    with tf.device("/cpu:0"):
+        prediction = neural_network_model(x)
+       
+        cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=prediction, labels=y))#a verif # v1.0 changes 
 
-    # optimizer value = 0.001, Adam similar to SGD 
-    optimizer = tf.train.AdamOptimizer().minimize(cost)
-    epochs_no = 10
+        # optimizer value = 0.001, Adam similar to SGD 
+        optimizer = tf.train.AdamOptimizer().minimize(cost)
+        epochs_no = 10
     
     with tf.Session() as sess:
         writer = tf.summary.FileWriter("output", sess.graph)
@@ -136,6 +138,8 @@ print('accuracy = ',np.mean(ACC))
 ACC=train_neural_network(x)
 print(" Mean accuracy : ",np.mean(ACC))
 
+elapsed = time.time() - t
+print("elapsed time",elapsed)
 
 
 

@@ -12,6 +12,9 @@ import numpy as np
 import time
 from datetime import datetime
 
+
+t = time.time()
+
 now=datetime.utcnow().strftime("%Y%m%d%H%M%S")
 root_logdir="tf_logs"
 logdir="{}/run-{}/".format(root_logdir,now)
@@ -77,14 +80,17 @@ def neural_network_model(data):
     
     output_l = {'weights': tf.Variable(tf.random_normal([n_nodes_hl3, n_classes])), 'biases': tf.Variable(tf.random_normal([n_classes]))} 
 
-    l1 = tf.add(tf.matmul(data, hidden_l1['weights']), hidden_l1['biases']) 
-    l1 = tf.nn.relu(l1)
+    l1 = tf.add(tf.matmul(data, hidden_l1['weights']), hidden_l1['biases'])
+    l1=tf.sigmoid(l1)
+    #l1 = tf.nn.softplus(l1)
     
     l2 = tf.add(tf.matmul(l1, hidden_l2['weights']), hidden_l2['biases']) 
-    l2 = tf.nn.relu(l2) 
+    l2=tf.sigmoid(l2)
+    #l2 = tf.nn.softplus(l2) 
 
     l3 = tf.add(tf.matmul(l2, hidden_l3['weights']), hidden_l3['biases']) 
-    l3 = tf.nn.relu(l3)
+    l3=tf.sigmoid(l3)
+    #l3 = tf.nn.softplus(l3)
 
     output = tf.add(tf.matmul(l3, output_l['weights']), output_l['biases'])
 
@@ -101,7 +107,7 @@ def train_neural_network(x):
     optimizer = tf.train.AdamOptimizer().minimize(cost)
     epochs_no = 10
     
-    with tf.Session(config=tf.ConfigProto(log_device_placement=True)) as sess:
+    with tf.Session() as sess:
 
         ACC=np.zeros(fold)
         sess.run(tf.global_variables_initializer()) # v1.0 changes
@@ -149,6 +155,8 @@ print('accuracy = ',np.mean(ACC))
 ACC=train_neural_network(x)
 print(" Mean accuracy : ",np.mean(ACC))
 
+elapsed = time.time() - t
+print("elapsed time",elapsed)
 
 
 

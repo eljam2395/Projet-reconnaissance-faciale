@@ -11,6 +11,7 @@ import tensorflow as tf
 import numpy as np
 import time
 
+t = time.time()
 
 vect_img=np.load('Img_flatten_cropped.npy');
 
@@ -147,6 +148,8 @@ ACC=train_neural_network(x)
 print(" Mean accuracy : ",np.mean(ACC))
 
 
+elapsed = time.time() - t
+print("elapsed time",elapsed)
 
 
 
