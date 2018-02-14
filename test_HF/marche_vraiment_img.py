@@ -113,7 +113,7 @@ def train_neural_network(x):
     
     epochs_no = 10
     
-    with tf.Session() as sess:
+    with tf.Session(config=tf.ConfigProto(log_device_placement=True)) as sess:
         #writer = tf.summary.FileWriter("output", sess.graph)
         #summaries = tf.summary.merge_all()
 
