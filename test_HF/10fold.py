@@ -101,7 +101,7 @@ def train_neural_network(x):
     optimizer = tf.train.AdamOptimizer().minimize(cost)
     epochs_no = 10
     
-    with tf.Session() as sess:
+    with tf.Session(config=tf.ConfigProto(log_device_placement=True)) as sess:
 
         ACC=np.zeros(fold)
         sess.run(tf.global_variables_initializer()) # v1.0 changes
