@@ -21,7 +21,7 @@ logdir="{}/run-{}/".format(root_logdir,now)
 
 vect_img=np.load("Img_flatten_RF.npy")
 
-nb_pixel=640*480
+nb_pixel=240*320
 
 fold=5
 
@@ -41,16 +41,16 @@ epoch_img[:,:,4]=vect_img[560:700,:]
 Label=np.load('Label_RF.npy');
 
 
-epoch_label=np.ones((140,fold),float)
+epoch_label=np.ones((140,50,fold),float)
 print(np.shape(Label[0:140]))
 print(np.shape(epoch_label))
 
 
-epoch_label[0:80,0]=(Label[0:80])
-epoch_label[:,1]=(Label[140:280])
-epoch_label[:,2]=(Label[280:420])
-epoch_label[:,3]=(Label[420:560])
-epoch_label[:,4]=(Label[560:700])
+epoch_label[:,:,0]=(Label[0:140])
+epoch_label[:,:,1]=(Label[140:280])
+epoch_label[:,:,2]=(Label[280:420])
+epoch_label[:,:,3]=(Label[420:560])
+epoch_label[:,:,4]=(Label[560:700])
 
 
 print(np.shape(Label))
@@ -66,8 +66,8 @@ n_classes = 50
 
 
 # input feature size = 360*260 pixels = 93600 
-x = tf.placeholder('float32', [None, nb_pixel]) 
-y = tf.placeholder('float32') 
+x = tf.placeholder('float', [None, nb_pixel]) 
+y = tf.placeholder('float') 
 
 def neural_network_model(data):
         # input_data * weights + biases 
@@ -92,6 +92,7 @@ def neural_network_model(data):
     return output 
 
 def train_neural_network(x):
+    
     prediction = neural_network_model(x)
        
     cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=prediction, labels=y))#a verif # v1.0 changes 
@@ -102,8 +103,10 @@ def train_neural_network(x):
     optimizer = tf.train.AdamOptimizer().minimize(cost)
         
     epochs_no = 10
+    #config = tf.ConfigProto()
+    #config.gpu_options.allocator_type = 'BFC'
     
-    with tf.Session(config=tf.ConfigProto(log_device_placement=True)) as sess:
+    with tf.Session() as sess:
         #writer = tf.summary.FileWriter("output", sess.graph)
         #summaries = tf.summary.merge_all()
 

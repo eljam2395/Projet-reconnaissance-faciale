@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 
 
+
 img=[]
 tab_img=[]
 '''
@@ -21,18 +22,21 @@ for i in range(1,51):
         else:
             nom=img_path+str(i)+"-"+str(p)+".jpg"
         image=cv2.imread(nom,0)
-        tab_img.append(image)
+        img_scaled = cv2.resize(image,None,fx=0.5, fy=0.5, interpolation = cv2.INTER_LINEAR)
+        tab_img.append(img_scaled)
         #print(nom)
 
 tab_img[1]
 vect_img=[]
+print(np.shape(image))
 print(np.shape(tab_img[1]))
 
-vect_img=np.reshape(tab_img,[50*14,640*480])
+vect_img=np.reshape(tab_img,[50*14,240*320])
+print(np.shape(vect_img[1]))
 
 np.save('Img_flatten_RF',vect_img)
 
-#cv2.imshow('image',vect_img[1])
+#cv2.imshow('image',tab_img[1])
 #cv2.waitKey(0)
 #cv2.destroyAllWindows()
 
@@ -45,12 +49,16 @@ Label=[]
 
 for i in range(1,51): #20
     for p in range(1,15):
-        Label.append(i)
-
-print(Label)
+        lab_int=np.zeros(50)
+        lab_int[i-1]=1
+        Label.append(lab_int)
 
 print(np.shape(Label))
-print(type(Label[0]))
+
+print(Label[699])
+
+
+print(type(Label[49]))
 
 
 np.save('Label_RF',Label)
