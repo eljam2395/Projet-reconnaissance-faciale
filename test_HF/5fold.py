@@ -124,8 +124,8 @@ def train_neural_network(x):
                 
             # testing 7
             correct = tf.equal(tf.argmax(prediction, 1), tf.argmax(y, 1))
-            print('valeur',tf.argmax(prediction, 1).eval({x:epoch_img[:,:,cross_val] , y: epoch_label[:,:,cross_val]}))
-            print('estim',tf.argmax(y, 1).eval({x:epoch_img[:,:,cross_val] , y: epoch_label[:,:,cross_val]}))
+            print('valeur',tf.argmax(prediction, 1).eval({x:epoch_img[:,:,cross_val]}))
+            print('estim',tf.argmax(y, 1).eval({y: epoch_label[:,:,cross_val]}))
             accuracy = tf.reduce_mean(tf.cast(correct, 'float'))
             summary_writer.add_summary(mse_summary.eval(feed_dict={x:epoch_img[:,:,cross_val],y:epoch_label[:,:,cross_val]}),step)
             step=step+1
