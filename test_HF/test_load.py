@@ -86,6 +86,8 @@ def neural_network_model(data):
 
     return output 
 
+cross_val=0
+
 def train_neural_network(x):
     prediction = neural_network_model(x)
        
@@ -102,39 +104,20 @@ def train_neural_network(x):
         #writer = tf.summary.FileWriter("output", sess.graph)
         #summaries = tf.summary.merge_all()
         saver = tf.train.Saver()
-        ACC=np.zeros(fold)
         sess.run(tf.global_variables_initializer()) # v1.0 changes
+        saver.restore(sess, "./my_5fold_model/")
         step=1
-        for cross_val in range(fold): 
-            # training
-            print('iter : ',cross_val)
-            array=np.linspace(0,fold-1,fold)
-            np.delete(array,cross_val)
-            
-            for epoch in array:
-                epoch=int(epoch)
-                epoch_x=epoch_img[:,:,epoch]
-                epoch_y=epoch_label[:,:,epoch]
-                _, c = sess.run([optimizer, cost], feed_dict = {x: epoch_x, y: epoch_y}) # code that optimizes the weights & biases 
-                epoch_loss = c
-                
-                #_, c = sess.run([optimizer, cost], feed_dict = {x: vect_img, y: Label}) # code that optimizes the weights & biases
-                
-                print('Epoch', epoch, 'completed out of', epochs_no, 'loss:', epoch_loss)
-                
-            # testing 7
-            correct = tf.equal(tf.argmax(prediction, 1), tf.argmax(y, 1))
-            print('valeur',tf.argmax(prediction, 1).eval({x:epoch_img[:,:,cross_val] , y: epoch_label[:,:,cross_val]}))
-            print('estim',tf.argmax(y, 1).eval({x:epoch_img[:,:,cross_val] , y: epoch_label[:,:,cross_val]}))
-            accuracy = tf.reduce_mean(tf.cast(correct, 'float'))
-            summary_writer.add_summary(mse_summary.eval(feed_dict={x:epoch_img[:,:,cross_val],y:epoch_label[:,:,cross_val]}),step)
-            step=step+1
-            ACC[cross_val]=accuracy.eval({x:epoch_img[:,:,cross_val] , y: epoch_label[:,:,cross_val]})
-            print('Accuracy:',ACC[cross_val])
+        # testing 7
+        correct = tf.equal(tf.argmax(prediction, 1), tf.argmax(y, 1))
+        print('valeur',tf.argmax(prediction, 1).eval({x:epoch_img[:,:,cross_val] , y: epoch_label[:,:,cross_val]}))
+        print('estim',tf.argmax(y, 1).eval({x:epoch_img[:,:,cross_val] , y: epoch_label[:,:,cross_val]}))
+        accuracy = tf.reduce_mean(tf.cast(correct, 'float'))
+        summary_writer.add_summary(mse_summary.eval(feed_dict={x:epoch_img[:,:,cross_val],y:epoch_label[:,:,cross_val]}),step)
+        ACC=accuracy.eval({x:epoch_img[:,:,cross_val] , y: epoch_label[:,:,cross_val]})
+        print('Accuracy:',ACC)
             
             
         summary_writer.close()
-        saver.save(sess, './my_5fold_model/')
     return(ACC)
     
 
@@ -157,9 +140,5 @@ print(" Mean accuracy : ",np.mean(ACC))
 
 elapsed = time.time() - t
 print("elapsed time",elapsed)
-
-
-
-
 
 
