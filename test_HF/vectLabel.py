@@ -207,11 +207,8 @@ for i in range(1,13): #400
 print(np.shape(Label))
 print(type(Label[0]))
 
-<<<<<<< HEAD
-np.save('label_test', Label)
-=======
 np.save('Label_test',Label)
->>>>>>> Maxime
+
 
 
 

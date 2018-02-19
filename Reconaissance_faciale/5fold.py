@@ -109,7 +109,7 @@ def train_neural_network(x):
     with tf.Session() as sess:
         #writer = tf.summary.FileWriter("output", sess.graph)
         #summaries = tf.summary.merge_all()
-
+        saver = tf.train.Saver()
         ACC=np.zeros(fold)
         sess.run(tf.global_variables_initializer()) # v1.0 changes
         step=1
@@ -141,6 +141,7 @@ def train_neural_network(x):
             print('Accuracy:',ACC[cross_val])
             
         summary_writer.close()
+        saver.save(sess, './my_5fold_cropped_model/')
     return(ACC)
     
 

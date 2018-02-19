@@ -98,7 +98,7 @@ cross_val=0
 def train_neural_network(x):
     prediction = neural_network_model(x)
        
-    summary_writer=tf.summary.FileWriter(logdir,tf.get_default_graph())
+    #summary_writer=tf.summary.FileWriter(logdir,tf.get_default_graph())
 
         
     epochs_no = 10
@@ -115,7 +115,7 @@ def train_neural_network(x):
         #print('estim',tf.argmax(y, 1).eval({y: Label}))
            
             
-        summary_writer.close()
+        #summary_writer.close()
     return()
     
 
