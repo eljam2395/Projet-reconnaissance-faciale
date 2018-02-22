@@ -13,9 +13,9 @@ for i in range(1,201):
 img_path='bdd_align_brasil/'
 #print(img_path+img[2]+'.jpg')
 
-for i in range(1,52):
+for i in range(1,51):
     if i==51:
-        for p in range(1,11):
+        for p in range(1,1):
             if p < 10:
                 nom=img_path+str(i)+"-"+"0"+str(p)+".jpg"
             else:
@@ -49,12 +49,11 @@ for i in range(1,52):
             #print(np.shape(img_scaled))
             #print(nom)
 
-tab_img[1]
-vect_img=[]
+
 print(np.shape(image))
 print(np.shape(tab_img))
 
-vect_img=np.reshape(tab_img,[710,260*360])
+vect_img=np.reshape(tab_img,[700,260*360])
 print(np.shape(vect_img[1]))
 
 np.save('Img_flatten_RF',vect_img)
@@ -70,22 +69,22 @@ np.save('Img_flatten_RF',vect_img)
 Label=[]
 
 
-for i in range(1,52): #20
+for i in range(1,51): #20
     if i==51:
         for p in range(1,11):
-            lab_int=np.zeros(51)
+            lab_int=np.zeros(50)
             lab_int[i-1]=1
             Label.append(lab_int)
 
     else:
         for p in range(1,15):
-            lab_int=np.zeros(51)
+            lab_int=np.zeros(50)
             lab_int[i-1]=1
             Label.append(lab_int)
 
 print(np.shape(Label))
 
-print(Label[709])
+print(Label[699])
 
 
 print(type(Label[49]))

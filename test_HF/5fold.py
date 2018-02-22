@@ -50,9 +50,8 @@ epoch_label[:,:,4]=(Label[320:400,:])
 print(np.shape(Label))
 
 
-n_nodes_hl1 = 500 
-n_nodes_hl2 = 500 
-n_nodes_hl3 = 500
+n_nodes_hl1 = 50 
+
 
 n_classes = 2 
 
@@ -65,23 +64,16 @@ y = tf.placeholder('float')
 def neural_network_model(data):
     # input_data * weights + biases 
     hidden_l1 = {'weights': tf.Variable(tf.random_normal([93600, n_nodes_hl1])), 'biases': tf.Variable(tf.random_normal([n_nodes_hl1]))} 
-    hidden_l2 = {'weights': tf.Variable(tf.random_normal([n_nodes_hl1, n_nodes_hl2])), 'biases': tf.Variable(tf.random_normal([n_nodes_hl2]))} 
-    hidden_l3 = {'weights': tf.Variable(tf.random_normal([n_nodes_hl2, n_nodes_hl3])), 'biases': tf.Variable(tf.random_normal([n_nodes_hl3]))}
-        
-    output_l = {'weights': tf.Variable(tf.random_normal([n_nodes_hl3, n_classes])), 'biases': tf.Variable(tf.random_normal([n_classes]))} 
+
+    output_l = {'weights': tf.Variable(tf.random_normal([n_nodes_hl1, n_classes])), 'biases': tf.Variable(tf.random_normal([n_classes]))} 
 
     
     l1 = tf.add(tf.matmul(data, hidden_l1['weights']), hidden_l1['biases']) 
     l1 = tf.nn.relu(l1)
 
         
-    l2 = tf.add(tf.matmul(l1, hidden_l2['weights']), hidden_l2['biases']) 
-    l2 = tf.nn.relu(l2) 
 
-    l3 = tf.add(tf.matmul(l2, hidden_l3['weights']), hidden_l3['biases']) 
-    l3 = tf.nn.relu(l3)
-
-    output = tf.add(tf.matmul(l3, output_l['weights']), output_l['biases'])
+    output = tf.add(tf.matmul(l1, output_l['weights']), output_l['biases'])
 
 
     return output 
@@ -132,7 +124,7 @@ def train_neural_network(x):
             ACC[cross_val]=accuracy.eval({x:epoch_img[:,:,cross_val] , y: epoch_label[:,:,cross_val]})
             print('Accuracy:',ACC[cross_val])
             
-            
+        time.sleep(1)
         summary_writer.close()
         saver.save(sess, './my_5fold_model/')
     return(ACC)

@@ -25,32 +25,32 @@ nb_pixel=360*260
 
 fold=5
 
-epoch_img=np.ones((142,nb_pixel,fold),float)
+epoch_img=np.ones((140,nb_pixel,fold),float)
 print(np.shape(vect_img))
 
-print(np.shape(vect_img[0:142,:]))
+print(np.shape(vect_img[0:140,:]))
 
-epoch_img[:,:,0]=vect_img[0:142,:]
-epoch_img[:,:,1]=vect_img[142:284,:]
-epoch_img[:,:,2]=vect_img[284:426,:]
-epoch_img[:,:,3]=vect_img[426:568,:]
-epoch_img[:,:,4]=vect_img[568:710,:]
+epoch_img[:,:,0]=vect_img[0:140,:]
+epoch_img[:,:,1]=vect_img[140:280,:]
+epoch_img[:,:,2]=vect_img[280:420,:]
+epoch_img[:,:,3]=vect_img[420:560,:]
+epoch_img[:,:,4]=vect_img[560:700,:]
 
 
 
 Label=np.load('Label_RF.npy');
 
 
-epoch_label=np.ones((142,51,fold),float)
+epoch_label=np.ones((140,50,fold),float)
 print(np.shape(Label[0:140]))
 print(np.shape(epoch_label))
 
 
-epoch_label[:,:,0]=(Label[0:142])
-epoch_label[:,:,1]=(Label[142:284])
-epoch_label[:,:,2]=(Label[284:426])
-epoch_label[:,:,3]=(Label[426:568])
-epoch_label[:,:,4]=(Label[568:710])
+epoch_label[:,:,0]=(Label[0:140])
+epoch_label[:,:,1]=(Label[140:280])
+epoch_label[:,:,2]=(Label[280:420])
+epoch_label[:,:,3]=(Label[420:560])
+epoch_label[:,:,4]=(Label[560:700])
 
 
 print(np.shape(Label))
@@ -62,7 +62,7 @@ n_nodes_hl1 = 500
 n_nodes_hl2 = 500 
 n_nodes_hl3 = 500
 
-n_classes = 51 
+n_classes = 50
 
 
 # input feature size = 360*260 pixels = 93600 

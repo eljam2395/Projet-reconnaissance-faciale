@@ -11,7 +11,7 @@ import tensorflow as tf
 import numpy as np
 import time
 from datetime import datetime
-
+from sklearn.utils import shuffle
 
 t = time.time()
 
@@ -20,7 +20,9 @@ root_logdir="tf_logs"
 logdir="{}/run-{}/".format(root_logdir,now)
 
 vect_img=np.load('Img_flatten.npy');
+Label=np.load('Label_test.npy');
 
+vect_img, Label = shuffle(vect_img, Label, random_state=0)
 fold=10
 
 epoch_img=np.ones((40,93600,fold),float)
@@ -38,8 +40,6 @@ epoch_img[:,:,7]=(vect_img[280:320,:])
 epoch_img[:,:,8]=(vect_img[320:360,:])
 epoch_img[:,:,9]=(vect_img[360:400,:])
 
-
-Label=np.load('Label_test.npy');
 
 
 epoch_label=np.ones((40,2,fold),float)
@@ -81,16 +81,16 @@ def neural_network_model(data):
     output_l = {'weights': tf.Variable(tf.random_normal([n_nodes_hl3, n_classes])), 'biases': tf.Variable(tf.random_normal([n_classes]))} 
 
     l1 = tf.add(tf.matmul(data, hidden_l1['weights']), hidden_l1['biases'])
-    l1=tf.sigmoid(l1)
-    #l1 = tf.nn.softplus(l1)
+    #l1=tf.sigmoid(l1)
+    l1 = tf.nn.relu(l1)
     
     l2 = tf.add(tf.matmul(l1, hidden_l2['weights']), hidden_l2['biases']) 
-    l2=tf.sigmoid(l2)
-    #l2 = tf.nn.softplus(l2) 
+    #l2=tf.sigmoid(l2)
+    l2 = tf.nn.relu(l2) 
 
     l3 = tf.add(tf.matmul(l2, hidden_l3['weights']), hidden_l3['biases']) 
-    l3=tf.sigmoid(l3)
-    #l3 = tf.nn.softplus(l3)
+    #l3=tf.sigmoid(l3)
+    l3 = tf.nn.relu(l3)
 
     output = tf.add(tf.matmul(l3, output_l['weights']), output_l['biases'])
 
@@ -100,7 +100,7 @@ def neural_network_model(data):
 def train_neural_network(x): 
     prediction = neural_network_model(x)
    
-    cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=prediction, labels=y))#a verif # v1.0 changes 
+    cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=prediction, labels=y))#a verif # v1.0 changes 
     mse_summary=tf.summary.scalar("mse",cost)
     summary_writer=tf.summary.FileWriter(logdir,tf.get_default_graph())
     # optimizer value = 0.001, Adam similar to SGD 
@@ -108,7 +108,7 @@ def train_neural_network(x):
     epochs_no = 10
     
     with tf.Session() as sess:
-
+        saver = tf.train.Saver()
         ACC=np.zeros(fold)
         sess.run(tf.global_variables_initializer()) # v1.0 changes
         step=1
@@ -136,6 +136,7 @@ def train_neural_network(x):
             
             step=step+1
         summary_writer.close()
+        saver.save(sess, './my_10fold_model/')
     return(ACC)
     
 
